@@ -1,0 +1,33 @@
+{
+  "name": "awos_bienesraices_240784_5b",
+  "version": "1.0.0",
+  "description": "Sistema de Bienes Raices basado en NodeJS, MVC y API REST",
+  "keywords": [
+    "MVC",
+    "Sequelice",
+    "NodeJS",
+    "API",
+    "Reset",
+    "TailwindsCSS",
+    "Leaflet"
+  ],
+  "homepage": "https://github.com/Jael240784/AWOS_BienesRaices_240784_5B#readme",
+  "bugs": {
+    "url": "https://github.com/Jael240784/AWOS_BienesRaices_240784_5B/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jael240784/AWOS_BienesRaices_240784_5B.git"
+  },
+  "license": "ISC",
+  "author": "Jael Adrian Gonzalez Cruz",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "nodemon": "^3.1.11"
+  }
+}
