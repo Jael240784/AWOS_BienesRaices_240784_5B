@@ -14,7 +14,7 @@
 
 | --- | --------------------------------------------------------------------------------- | ----------- | ------- |
 
-| 1.  | Configuración inicial del Proyecto (NodeJS)                                       |  ❌        |  ❌    |
+| 1.  | Configuración inicial del Proyecto (NodeJS)                                       |  2          | ✅     |
 
 | 2.  | Routing y Requests (Peticiones)                                                   |  ❌        |  ❌    |
 
