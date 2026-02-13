@@ -2,6 +2,10 @@ import express from "express";
 
 const router = express.Router();
 
+// GET (PUG)
+router.get("/login", (req, res) => {
+  res.render("auth/login"); // views/auth/login.pug
+});
 
 // POST
 router.post("/createUser", (req, res) => {
@@ -10,8 +14,8 @@ router.post("/createUser", (req, res) => {
   const body = req.body || {};
 
   const nuevoUsuario = {
-    nombre: body.nombre || "Jael Gonzalez",
-    correo: body.correo || "personal@gmail.com",
+    nombre: body.nombre || "Jael A. Gonzalez Cruz",
+    correo: body.correo || "i2487876@gmail.com",
   };
 
   res.json({
@@ -19,7 +23,6 @@ router.post("/createUser", (req, res) => {
     message: `Se ha solicitado la creación del usuario con el nombre ${nuevoUsuario.nombre} y el correo ${nuevoUsuario.correo}`,
   });
 });
-
 
 // PUT
 router.put("/actualizarOferta", (req, res) => {
@@ -43,7 +46,6 @@ router.put("/actualizarOferta", (req, res) => {
   });
 });
 
-
 // PATCH
 router.patch("/actualizarPassword/:nuevaPassword", (req, res) => {
   console.log("Se está procesando la petición del tipo PATCH");
@@ -56,7 +58,6 @@ router.patch("/actualizarPassword/:nuevaPassword", (req, res) => {
   });
 });
 
-
 // DELETE
 router.delete("/borrarPropiedad/:id", (req, res) => {
   console.log("Se está procesando la petición del tipo DELETE");
@@ -68,6 +69,5 @@ router.delete("/borrarPropiedad/:id", (req, res) => {
     message: `Se ha eliminado la propiedad con el ID ${id}`,
   });
 });
-
 
 export default router;

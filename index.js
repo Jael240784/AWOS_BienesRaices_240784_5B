@@ -2,23 +2,24 @@ import express from "express";
 import usuarioRoutes from "./routes/usuarioRoutes.js";
 
 const app = express();
-const PORT = process.env.PORT ?? 4000;
+const PORT = process.env.PORT || 4000;
 
-app.use(express.json());
+// Template Engine (PUG)
+app.set("view engine", "pug");
+app.set("views", "./views");
 
-// GET principal
+// Middlewares
+app.use(express.json()); // para leer JSON del body
+app.use(express.static("./public")); // recursos estáticos (css, img, etc)
+
+// Rutas
+app.use("/auth", usuarioRoutes);
+
+// (opcional) ruta raíz para probar rápido
 app.get("/", (req, res) => {
-  console.log("Se está procesando la petición del tipo GET");
-
-  res.json({
-    status: 200,
-    message: "Bienvenido al Sistema de Bienes Raices",
-  });
+  res.redirect("/auth/login");
 });
 
-// 🔥 IMPORTANTE: Conectar las rutas
-app.use("/", usuarioRoutes);
-
 app.listen(PORT, () => {
-  console.log(`El servidor está iniciado en el puerto ${PORT}`);
+  console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
