@@ -18,7 +18,7 @@
 
 | 2.  | Routing y Requests (Peticiones)                                                   |  5         |   ✅   |
 
-| 3.  | Layouts, Template Engines y Tailwind CSS (Frontend)                               |  ❌        |  ❌    |
+| 3.  | Layouts, Template Engines y Tailwind CSS (Frontend)                               |  5         |  ✅    |
 
 | 4.  | Creación de páginas de Login y Creación de Usuarios                               |  ❌        |  ❌    |
 
