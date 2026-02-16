@@ -1,11 +1,11 @@
 import express from "express";
+import { formularioLogin,formularioRegistro } from "../controllers/usuarioControllers.js";
 
 const router = express.Router();
 
 // GET (PUG)
-router.get("/login", (req, res) => {
-  res.render("auth/login"); // views/auth/login.pug
-});
+router.get("/login", formularioLogin);
+router.get("/registro", formularioRegistro);
 
 // POST
 router.post("/createUser", (req, res) => {
