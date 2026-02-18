@@ -14,13 +14,13 @@
 
 | --- | --------------------------------------------------------------------------------- | ----------- | ------- |
 
-| 1.  | Configuración inicial del Proyecto (NodeJS)                                       |  2          | ✅     |
+| 1.  | Configuración inicial del Proyecto (NodeJS)                                       |  2         | ✅      |
 
-| 2.  | Routing y Requests (Peticiones)                                                   |  5          |   ✅   |
+| 2.  | Routing y Requests (Peticiones)                                                   |  5         |   ✅    |
 
-| 3.  | Layouts, Template Engines y Tailwind CSS (Frontend)                               |  5         |  ✅    |
+| 3.  | Layouts, Template Engines y Tailwind CSS (Frontend)                               |  5         |   ✅    |
 
-| 4.  | Creación de páginas de Login y Creación de Usuarios                               |  ❌        |  ❌    |
+| 4.  | Creación de páginas de Login y Creación de Usuarios                               |  6         |  ✅     |
 
 | 5.  | ORM y Bases de Datos                                                              |  ❌        |  ❌    |
 
