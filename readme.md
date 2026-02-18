@@ -16,7 +16,7 @@
 
 | 1.  | Configuración inicial del Proyecto (NodeJS)                                       |  2          | ✅     |
 
-| 2.  | Routing y Requests (Peticiones)                                                   |  5          |   ✅   |
+| 2.  | Routing y Requests (Peticiones)                                                   |  5          |  ✅   |
 
 | 3.  | Layouts, Template Engines y Tailwind CSS (Frontend)                               |  5         |  ✅    |
 
