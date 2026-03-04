@@ -23,14 +23,16 @@
   "author": "Jael Adrian Gonzalez Cruz",
   "type": "module",
   "main": "index.js",
-  
   "scripts": {
     "dev": "nodemon index.js",
     "watch:css": "npx @tailwindcss/cli -i ./src/css/styles.css -o ./public/css/styles.css --watch"
   },
   "dependencies": {
+    "dotenv": "^17.3.1",
     "express": "^5.2.1",
-    "pug": "^3.0.3"
+    "mysql2": "^3.18.2",
+    "pug": "^3.0.3",
+    "sequelize": "^6.37.7"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.1.18",
