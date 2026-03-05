@@ -9,24 +9,29 @@ block contenido
 
     .mt-8.mx-auto.max-w-xl
       .bg-white.py-8.px-4.shadow-2xl.rounded-2xl
+        if errores && errores.length
+          ul.px-5.mb-4
+            each e in errores
+              li.text-red-600.text-sm= e.msg
+
         form.space-y-5(method="POST" action="/auth/registro")
           div.px-5
             label.block.text-sm.uppercase.text-gray-500.mb-2.font-bold(for="nombreUsuario") Nombre Completo:
             input#nombreUsuario.w-full.border.border-gray-300.px-3.py-2.rounded-md-xl.placeholder-gray-400.bg-white.transition-all.duration-200(
-              placeholder="Tu nombre completo"
+              placeholder="Nombre Completo"
               name="nombreUsuario"
               type="text"
-              value=(datos?.nombreUsuario || "")
+              value=(datos && datos.nombreUsuario ? datos.nombreUsuario : "")
               class="hover:inset-shadow-sm focus:inset-shadow-xl focus:inset-shadow-orange-300 focus:outline-none"
             )
 
           div.px-5
             label.block.text-sm.uppercase.text-gray-500.mb-2.font-bold(for="emailUsuario") Correo electrónico:
             input#emailUsuario.w-full.border.border-gray-300.px-3.py-2.rounded-md-xl.placeholder-gray-400.bg-white.transition-all.duration-200(
-              placeholder="correo@ejemplo.com"
+              placeholder="correo@gmail.com"
               name="emailUsuario"
               type="email"
-              value=(datos?.emailUsuario || "")
+              value=(datos && datos.emailUsuario ? datos.emailUsuario : "")
               class="hover:inset-shadow-sm focus:inset-shadow-xl focus:inset-shadow-orange-300/50 focus:outline-none"
             )
 
@@ -42,7 +47,7 @@ block contenido
           div.px-5
             label.block.text-sm.uppercase.text-gray-500.mb-2.font-bold(for="confirmarPasswordUsuario") Confirmación de contraseña:
             input#confirmarPasswordUsuario.w-full.border.border-gray-300.px-3.py-2.rounded-md-xl.placeholder-gray-400.bg-white.transition-all.duration-200(
-              placeholder="Confirmar contraseña"
+              placeholder="Confirmar Contraseña"
               name="confirmarPasswordUsuario"
               type="password"
               class="hover:inset-shadow-sm focus:inset-shadow-xl focus:inset-shadow-orange-300/50 focus:outline-none"
@@ -53,6 +58,6 @@ block contenido
             value="Registrar Usuario"
           )
 
-          div.flex.items-center.justify-between.pt-3
+          .flex.items-center.justify-between.pt-3
             a(class="text-gray-500 text-sm hover:decoration-orange-400 hover:underline transition decoration-2" href="/auth/login") ¿Ya tienes cuenta? Inicia Sesión
-            a(class="text-gray-500 text-sm hover:decoration-orange-400 hover:underline transition decoration-2" href="/auth/recuperarPassword") ¿Olvidaste tu contraseña? Recuperala
+            a(class="text-gray-500 text-sm hover:decoration-orange-400 hover:underline transition decoration-2" href="/auth/recuperarPassword") ¿Olvidaste tu contraseña? Recupérala

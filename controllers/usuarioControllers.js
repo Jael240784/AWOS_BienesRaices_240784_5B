@@ -2,6 +2,8 @@ import { validationResult } from "express-validator";
 import bcrypt from "bcrypt";
 import Usuario from "../models/Usuario.js";
 import { generarToken } from "../lib/tokens.js";
+import { emailRegistro } from "../lib/email.js";
+
 
 const formularioRegistro = (req, res) => {
   res.render("auth/registro", {
@@ -54,12 +56,18 @@ const registrarUsuario = async (req, res) => {
 
     const token = generarToken();
 
-    await Usuario.create({
+    const nuevoUsuario = await Usuario.create({
       name: nombreUsuario,
       email: emailUsuario,
       password: passwordHash,
       token: token,
       confirmed: false
+    });
+
+    await emailRegistro({
+      email: nuevoUsuario.email,
+      nombre: nuevoUsuario.name,
+      token: nuevoUsuario.token
     });
 
     return res.render("templates/mensaje", {
