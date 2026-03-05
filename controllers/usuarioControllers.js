@@ -3,52 +3,86 @@ import bcrypt from "bcrypt";
 import Usuario from "../models/Usuario.js";
 import { generarToken } from "../lib/tokens.js";
 
-const formularioRegistro = (req, res) => res.render("auth/registro");
-const formularioLogin = (req, res) => res.render("auth/login");
-const formularioRecuperacion = (req, res) => res.render("auth/recuperarPassword");
+const formularioRegistro = (req, res) => {
+  res.render("auth/registro", {
+    pagina: "Crear Cuenta"
+  });
+};
+
+const formularioLogin = (req, res) => {
+  res.render("auth/login", {
+    pagina: "Iniciar Sesión"
+  });
+};
+
+const formularioRecuperacion = (req, res) => {
+  res.render("auth/recuperarPassword", {
+    pagina: "Recuperar Password"
+  });
+};
 
 const registrarUsuario = async (req, res) => {
+
   const errores = validationResult(req);
+
   if (!errores.isEmpty()) {
-    return res.status(400).render("auth/registro", {
+    return res.render("auth/registro", {
+      pagina: "Crear Cuenta",
       errores: errores.array(),
-      datos: req.body,
+      datos: req.body
     });
   }
 
-  const { nombreUsuario, emailUsuario, passwordUsuario, confirmarPasswordUsuario } = req.body;
-  const email = emailUsuario.toLowerCase().trim();
+  const { nombreUsuario, emailUsuario, passwordUsuario } = req.body;
 
-  if (passwordUsuario !== confirmarPasswordUsuario) {
-    return res.status(400).render("auth/registro", {
-      errores: [{ msg: "Las contraseñas no coinciden" }],
-      datos: req.body,
+  try {
+
+    const existeUsuario = await Usuario.findOne({
+      where: { email: emailUsuario }
     });
-  }
 
-  const existe = await Usuario.findOne({ where: { email } });
-  if (existe) {
-    return res.status(400).render("auth/registro", {
-      errores: [{ msg: "El email ya está registrado" }],
-      datos: req.body,
+    if (existeUsuario) {
+      return res.render("auth/registro", {
+        pagina: "Crear Cuenta",
+        errores: [{ msg: "El correo electrónico ya está registrado" }],
+        datos: req.body
+      });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const passwordHash = await bcrypt.hash(passwordUsuario, salt);
+
+    const token = generarToken();
+
+    await Usuario.create({
+      name: nombreUsuario,
+      email: emailUsuario,
+      password: passwordHash,
+      token: token,
+      confirmed: false
     });
+
+    return res.render("templates/mensaje", {
+      title: "Cuenta creada",
+      msg: "La cuenta se creó correctamente. Revisa tu correo para confirmar tu cuenta."
+    });
+
+  } catch (error) {
+
+    console.log(error);
+
+    return res.render("auth/registro", {
+      pagina: "Crear Cuenta",
+      errores: [{ msg: "Error al crear la cuenta" }],
+      datos: req.body
+    });
+
   }
-
-  const passwordHash = await bcrypt.hash(passwordUsuario, 10);
-
-  await Usuario.create({
-    name: nombreUsuario,
-    email,
-    password: passwordHash,
-    token: generarToken(),
-  });
-
-  return res.redirect("/auth/login?creado=1");
 };
 
 export {
   formularioRegistro,
   formularioLogin,
   formularioRecuperacion,
-  registrarUsuario,
+  registrarUsuario
 };
