@@ -1,96 +1,91 @@
 import { validationResult } from "express-validator";
 import bcrypt from "bcrypt";
 import Usuario from "../models/Usuario.js";
-import { generarToken } from "../lib/tokens.js";
-import { emailRegistro } from "../lib/email.js";
 
-
-const formularioRegistro = (req, res) => {
-  res.render("auth/registro", {
-    pagina: "Crear Cuenta"
-  });
+export const formularioLogin = (req, res) => {
+  res.render("auth/login", { pagina: "Iniciar Sesión" });
 };
 
-const formularioLogin = (req, res) => {
-  res.render("auth/login", {
-    pagina: "Iniciar Sesión"
-  });
+export const formularioRegistro = (req, res) => {
+  res.render("auth/registro", { pagina: "Crear Cuenta" });
 };
 
-const formularioRecuperacion = (req, res) => {
-  res.render("auth/recuperarPassword", {
-    pagina: "Recuperar Password"
-  });
+export const formularioRecuperacion = (req, res) => {
+  res.render("auth/recuperarPassword", { pagina: "Recuperar Password" });
 };
 
-const registrarUsuario = async (req, res) => {
-
-  const errores = validationResult(req);
-
-  if (!errores.isEmpty()) {
-    return res.render("auth/registro", {
-      pagina: "Crear Cuenta",
-      errores: errores.array(),
-      datos: req.body
-    });
-  }
-
-  const { nombreUsuario, emailUsuario, passwordUsuario } = req.body;
-
+export const registrarUsuario = async (req, res) => {
   try {
-
-    const existeUsuario = await Usuario.findOne({
-      where: { email: emailUsuario }
-    });
-
-    if (existeUsuario) {
+    const errores = validationResult(req);
+    if (!errores.isEmpty()) {
       return res.render("auth/registro", {
         pagina: "Crear Cuenta",
-        errores: [{ msg: "El correo electrónico ya está registrado" }],
-        datos: req.body
+        errores: errores.array(),
+        datos: req.body,
+      });
+    }
+
+    const { nombreUsuario, emailUsuario, passwordUsuario } = req.body;
+
+    const existe = await Usuario.findOne({ where: { email: emailUsuario } });
+    if (existe) {
+      return res.render("auth/registro", {
+        pagina: "Crear Cuenta",
+        errores: [{ msg: "Ese correo ya está registrado." }],
+        datos: req.body,
       });
     }
 
     const salt = await bcrypt.genSalt(10);
-    const passwordHash = await bcrypt.hash(passwordUsuario, salt);
+    const hashed = await bcrypt.hash(passwordUsuario, salt);
 
-    const token = generarToken();
+    const token = Math.random().toString(32).substring(2) + Date.now().toString(32);
 
-    const nuevoUsuario = await Usuario.create({
+    await Usuario.create({
       name: nombreUsuario,
       email: emailUsuario,
-      password: passwordHash,
-      token: token,
-      confirmed: false
-    });
-
-    await emailRegistro({
-      email: nuevoUsuario.email,
-      nombre: nuevoUsuario.name,
-      token: nuevoUsuario.token
+      password: hashed,
+      token,
+      confirmed: false,
     });
 
     return res.render("templates/mensaje", {
       title: "Cuenta creada",
-      msg: "La cuenta se creó correctamente. Revisa tu correo para confirmar tu cuenta."
+      msg: "La cuenta se creó correctamente. Revisa tu correo para confirmar tu cuenta.",
+      boton: { texto: "Iniciar sesión", url: "/auth/login" },
     });
-
-  } catch (error) {
-
-    console.log(error);
-
-    return res.render("auth/registro", {
-      pagina: "Crear Cuenta",
-      errores: [{ msg: "Error al crear la cuenta" }],
-      datos: req.body
-    });
-
+  } catch (e) {
+    console.log(e);
+    return res.status(500).send("Error interno");
   }
 };
 
-export {
-  formularioRegistro,
-  formularioLogin,
-  formularioRecuperacion,
-  registrarUsuario
+export const paginaConfirmacion = async (req, res) => {
+  try {
+    const { token } = req.params;
+
+    const usuarioToken = await Usuario.findOne({ where: { token } });
+
+    if (!usuarioToken) {
+      return res.render("templates/mensaje", {
+        title: "Error al confirmar la cuenta",
+        msg: "El código de verificación no es válido o ya expiró. Intenta registrarte de nuevo.",
+        boton: { texto: "Volver a registro", url: "/auth/registro" },
+      });
+    }
+
+    // confirmar
+    usuarioToken.token = null;
+    usuarioToken.confirmed = true;
+    await usuarioToken.save();
+
+    return res.render("templates/mensaje", {
+      title: "Confirmación exitosa",
+      msg: `La cuenta de: ${usuarioToken.name}, asociada al correo electrónico: ${usuarioToken.email} se ha confirmado, ahora ya puedes ingresar a la plataforma.`,
+      boton: { texto: "Iniciar sesión", url: "/auth/login" },
+    });
+  } catch (e) {
+    console.log(e);
+    return res.status(500).send("Error interno");
+  }
 };

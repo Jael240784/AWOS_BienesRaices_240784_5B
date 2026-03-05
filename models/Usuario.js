@@ -1,4 +1,3 @@
-// models/Usuario.js
 import { DataTypes } from "sequelize";
 import db from "../config/db.js";
 
@@ -28,14 +27,12 @@ const Usuario = db.define(
       field: "confirmado",
     },
 
-    // ✅ token de confirmación de cuenta
     token: {
       type: DataTypes.STRING(255),
       allowNull: true,
       field: "token",
     },
 
-    // ✅ recuperación (puedes usarlo después)
     tokenRecovery: {
       type: DataTypes.STRING(255),
       allowNull: true,

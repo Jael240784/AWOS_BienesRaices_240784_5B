@@ -4,16 +4,17 @@ import {
   formularioRegistro,
   formularioRecuperacion,
   registrarUsuario,
+  paginaConfirmacion,
 } from "../controllers/usuarioControllers.js";
 
 const router = express.Router();
 
-// GET (PUG)
 router.get("/login", formularioLogin);
 router.get("/registro", formularioRegistro);
 router.get("/recuperarPassword", formularioRecuperacion);
 
-// POST (registro real)
+router.get("/confirmar/:token", paginaConfirmacion);
+
 router.post("/registro", registrarUsuario);
 
 export default router;
