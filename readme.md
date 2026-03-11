@@ -22,9 +22,9 @@
 
 | 4.  | Creación de páginas de Login y Creación de Usuarios                               |  6         |  ✅     |
 
-| 5.  | ORM y Bases de Datos                                                              |  ❌        |  ❌    |
+| 5.  | ORM y Bases de Datos                                                              |  7        |  ✅    |
 
-| 6.  | Insertando Registros en la Tabla Usuarios                                         |  ❌        |  ❌    |
+| 6.  | Insertando Registros en la Tabla Usuarios                                         |  20        |  ✅    |
 
 | 7.  | Implementación de la Funcionalidad Recuperación de Contraseña (Password Recovery) |  ❌        |  ❌    |
 
