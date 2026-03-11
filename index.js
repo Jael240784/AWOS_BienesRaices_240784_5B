@@ -1,18 +1,26 @@
 import express from "express";
+import dotenv from "dotenv";
 import usuarioRoutes from "./routes/usuarioRoutes.js";
+import { connectDB } from "./config/db.js";
+
+dotenv.config();
+
+import "./models/Usuario.js";
 
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-// Template Engine (PUG)
 app.set("view engine", "pug");
 app.set("views", "./views");
 
-// Middlewares
-app.use(express.static("./public")); // recursos estáticos (css, img, etc)
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-// Rutas
+app.use(express.static("./public"));
+
 app.use("/auth", usuarioRoutes);
+
+await connectDB();
 
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en el puerto ${PORT}`);
