@@ -19,7 +19,13 @@ block contenido
         else
           p.text-gray-500.mb-6 No hay información disponible.
 
-        a(
-          href="/auth/login"
-          class="inline-block bg-orange-400 hover:bg-orange-500 text-white font-bold py-2 px-6 rounded-lg transition"
-        ) Iniciar sesión
+        if buttonVisibility
+          a(
+            href=buttonURL
+            class="inline-block bg-orange-400 hover:bg-orange-500 text-white font-bold py-2 px-6 rounded-lg transition"
+          )= buttonText
+        else
+          a(
+            href="/auth/login"
+            class="inline-block bg-orange-400 hover:bg-orange-500 text-white font-bold py-2 px-6 rounded-lg transition"
+          ) Iniciar sesión
